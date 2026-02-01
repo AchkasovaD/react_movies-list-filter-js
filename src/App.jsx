@@ -7,12 +7,13 @@ import moviesFromServer from './api/movies.json';
 export const App = () => {
   function prepareMovies(movies, { query }) {
     let sortedMovies = movies;
+    const queryToSearch = query.trim().toLowerCase();
 
     if (query) {
       sortedMovies = movies.filter(
         movie =>
-          movie.title.toLowerCase().includes(query.trim().toLowerCase()) ||
-          movie.description.toLowerCase().includes(query.trim().toLowerCase()),
+          movie.title.toLowerCase().includes(queryToSearch) ||
+          movie.description.toLowerCase().includes(queryToSearch),
       );
     }
 
@@ -20,7 +21,7 @@ export const App = () => {
   }
 
   const [query, setQuery] = useState('');
-  const visibleMovies = prepareMovies([...moviesFromServer], { query });
+  const visibleMovies = prepareMovies(moviesFromServer, { query });
 
   return (
     <div className="page">
@@ -39,8 +40,8 @@ export const App = () => {
                 className="input"
                 placeholder="Type search word"
                 value={query}
-                onChange={e => {
-                  setQuery(e.target.value);
+                onChange={eventInput => {
+                  setQuery(eventInput.target.value);
                 }}
               />
             </div>
